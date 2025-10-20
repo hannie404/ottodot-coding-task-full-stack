@@ -1,0 +1,4 @@
+app/assets/*.pdf
+.env.local
+.env*.local
+node_modules
