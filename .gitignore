@@ -83,3 +83,6 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+
+# Large assets - don't commit to git
+app/assets/*.pdf
