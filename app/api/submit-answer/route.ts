@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
-    const { sessionId, userAnswer } = await request.json();
+    const { sessionId, userAnswer, hintsUsed = 0, timeSpent = 0 } = await request.json();
 
     if (!sessionId || userAnswer === undefined || userAnswer === null) {
       return NextResponse.json(
@@ -45,7 +45,9 @@ export async function POST(request: NextRequest) {
         session_id: sessionId,
         user_answer: userAnswerNum,
         is_correct: isCorrect,
-        feedback_text: feedbackText
+        feedback_text: feedbackText,
+        hints_used: hintsUsed,
+        time_spent_seconds: timeSpent
       })
       .select()
       .single();
@@ -58,11 +60,29 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Update user stats
+    try {
+      await fetch(`${request.nextUrl.origin}/api/stats`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: 'anonymous',
+          isCorrect,
+          difficulty: session.difficulty,
+          problemType: session.problem_type
+        })
+      });
+    } catch (statsError) {
+      console.error('Failed to update stats:', statsError);
+      // Don't fail the request if stats update fails
+    }
+
     return NextResponse.json({
       isCorrect,
       feedback: feedbackText,
       correctAnswer: session.correct_answer,
-      submissionId: submission.id
+      submissionId: submission.id,
+      solutionSteps: session.solution_steps
     });
 
   } catch (error) {

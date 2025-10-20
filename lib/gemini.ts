@@ -1,5 +1,5 @@
 import { GoogleGenAI } from '@google/genai';
-import type { GeminiImagePart, GeminiContentPart } from './types';
+import type { GeminiImagePart, GeminiContentPart, Difficulty, ProblemType, MathProblem } from './types';
 
 const apiKey = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY;
 
@@ -55,18 +55,39 @@ export function createChatSession(systemInstruction?: string) {
 }
 
 /**
- * Generate math problem using structured prompt
+ * Generate math problem using structured prompt with difficulty and type
  */
-export async function generateMathProblem(): Promise<{
-  problem_text: string;
-  final_answer: number;
-}> {
+export async function generateMathProblem(
+  difficulty: Difficulty = 'medium',
+  problemType: ProblemType = 'general'
+): Promise<MathProblem> {
+  const difficultyGuidance = {
+    easy: 'Simple one or two-step problems with small numbers (under 100). Basic operations.',
+    medium: 'Multi-step problems with moderate numbers (under 1000). May involve fractions, decimals, or simple ratios.',
+    hard: 'Complex multi-step problems with larger numbers or abstract concepts. May involve percentages, ratios, rates, or compound shapes.'
+  };
+
+  const typeGuidance = {
+    addition: 'Focus on addition problems, possibly involving money, measurements, or combining quantities.',
+    subtraction: 'Focus on subtraction problems, possibly involving finding differences, change, or "how many more" scenarios.',
+    multiplication: 'Focus on multiplication problems, possibly involving groups, arrays, area, or scaling.',
+    division: 'Focus on division problems, possibly involving sharing, grouping, rate, or finding unit rates.',
+    mixed: 'Use a combination of operations (addition, subtraction, multiplication, division) in a multi-step problem.',
+    general: 'Any appropriate Primary 5 topic including fractions, decimals, percentages, geometry, or word problems.'
+  };
+
   const prompt = `
     You are a Primary 5 mathematics teacher in Singapore creating word problems based on the Singapore Primary Mathematics curriculum.
     
-    Generate a single math word problem suitable for Primary 5 students (ages 10-11). The problem should focus on these Primary 5 topics:
+    Generate a single math word problem suitable for Primary 5 students (ages 10-11).
     
-    **Core Topics:**
+    **Difficulty Level: ${difficulty.toUpperCase()}**
+    ${difficultyGuidance[difficulty]}
+    
+    **Problem Type: ${problemType.toUpperCase()}**
+    ${typeGuidance[problemType]}
+    
+    **Core Topics (choose appropriately for difficulty):**
     - Fractions: Add, subtract, multiply, divide proper and improper fractions, mixed numbers
     - Decimals: Operations with decimals up to 2 decimal places
     - Percentages: Finding percentages of quantities, percentage increase/decrease
@@ -81,20 +102,13 @@ export async function generateMathProblem(): Promise<{
     - Real-world scenarios (shopping at NTUC, void deck activities, school events, hawker centers, etc.)
     - Clear, solvable numerical answer (whole number or decimal up to 2 places)
     - Appropriate vocabulary for 10-11 year olds
-    - Multi-step problem that requires logical thinking
-    
-    **Example contexts to use:**
-    - Shopping for ingredients at the wet market
-    - Planning a class party or school event
-    - Sports day activities and timing
-    - Sharing pizza or snacks among friends
-    - Calculating travel time on MRT/bus
-    - Playground or void deck games
     
     Return ONLY a valid JSON object with this exact format:
     {
       "problem_text": "Your Singapore-contextualized word problem here",
-      "final_answer": numerical_answer_only
+      "final_answer": numerical_answer_only,
+      "hint_text": "A helpful hint without giving away the answer",
+      "solution_steps": ["Step 1: ...", "Step 2: ...", "Step 3: ..."]
     }
     
     Do not include any explanation or additional text outside the JSON.
@@ -116,7 +130,14 @@ export async function generateMathProblem(): Promise<{
     if (!parsed.problem_text || typeof parsed.final_answer !== 'number') {
       throw new Error('Invalid response format');
     }
-    return parsed;
+    return {
+      problem_text: parsed.problem_text,
+      final_answer: parsed.final_answer,
+      difficulty,
+      problem_type: problemType,
+      hint_text: parsed.hint_text,
+      solution_steps: parsed.solution_steps
+    };
   } catch (error) {
     console.error('Failed to parse math problem response:', response);
     throw new Error('Failed to parse AI response for math problem');

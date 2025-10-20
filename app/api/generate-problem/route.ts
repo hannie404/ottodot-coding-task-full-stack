@@ -1,18 +1,27 @@
 import { generateMathProblem } from '../../../lib/gemini';
 import { supabase } from '../../../lib/supabaseClient';
 import { NextRequest, NextResponse } from 'next/server';
+import type { Difficulty, ProblemType } from '../../../lib/types';
 
 export async function POST(request: NextRequest) {
   try {
-    // Generate math problem using our utility function
-    const problemData = await generateMathProblem();
+    const body = await request.json().catch(() => ({}));
+    const difficulty: Difficulty = body.difficulty || 'medium';
+    const problemType: ProblemType = body.problemType || 'general';
+
+    // Generate math problem using our utility function with difficulty and type
+    const problemData = await generateMathProblem(difficulty, problemType);
 
     // Save to database
     const { data, error } = await supabase
       .from('math_problem_sessions')
       .insert({
         problem_text: problemData.problem_text,
-        correct_answer: problemData.final_answer
+        correct_answer: problemData.final_answer,
+        difficulty: problemData.difficulty,
+        problem_type: problemData.problem_type,
+        hint_text: problemData.hint_text,
+        solution_steps: problemData.solution_steps
       })
       .select()
       .single();
@@ -29,7 +38,11 @@ export async function POST(request: NextRequest) {
       sessionId: data.id,
       problem: {
         problem_text: problemData.problem_text,
-        final_answer: problemData.final_answer
+        final_answer: problemData.final_answer,
+        difficulty: problemData.difficulty,
+        problem_type: problemData.problem_type,
+        hint_text: problemData.hint_text,
+        solution_steps: problemData.solution_steps
       }
     });
 
