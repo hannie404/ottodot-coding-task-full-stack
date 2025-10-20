@@ -105,13 +105,13 @@ Create a new API route that handles:
 
 ### 3. Requirements Checklist
 
-- [ ] AI generates appropriate Primary 5 level math problems
-- [ ] Problems and answers are saved to Supabase
-- [ ] User submissions are saved with feedback
-- [ ] AI generates helpful, personalized feedback
-- [ ] UI is clean and mobile-responsive
-- [ ] Error handling for API failures
-- [ ] Loading states during API calls
+- [x] AI generates appropriate Primary 5 level math problems
+- [x] Problems and answers are saved to Supabase
+- [x] User submissions are saved with feedback
+- [x] AI generates helpful, personalized feedback
+- [x] UI is clean and mobile-responsive
+- [x] Error handling for API failures
+- [x] Loading states during API calls
 
 ## Deployment
 
@@ -136,24 +136,88 @@ When submitting your assessment, provide:
 
 ## Implementation Notes
 
-*Please fill in this section with any important notes about your implementation, design decisions, challenges faced, or features you're particularly proud of.*
-
 ### My Implementation:
 
-- 
-- 
-- 
+#### Core Features (All Implemented ✅)
+1. **AI-Powered Problem Generation**: Using Google's Gemini 2.5 Flash model to generate contextual Singapore Primary 5 math problems
+2. **Database Persistence**: All problems and submissions saved to Supabase with proper schemas and RLS policies
+3. **Personalized Feedback**: AI-generated feedback tailored to whether the answer is correct or incorrect
+4. **Responsive UI**: Clean, mobile-first design using Tailwind CSS with gradient backgrounds and smooth animations
+5. **Error Handling**: Comprehensive try-catch blocks with user-friendly error messages
+6. **Loading States**: Visual feedback during all async operations with spinners and disabled buttons
+
+#### Optional Features (All Implemented ✅)
+1. **Difficulty Levels**: Easy, Medium, and Hard modes with appropriate problem complexity
+   - Easy: 1-2 step problems with small numbers (10 points)
+   - Medium: Multi-step problems with moderate numbers (20 points)  
+   - Hard: Complex problems with abstract concepts (30 points)
+
+2. **Problem Types**: Six different problem categories
+   - Addition, Subtraction, Multiplication, Division
+   - Mixed Operations
+   - General (covers all Primary 5 topics: fractions, decimals, percentages, geometry, ratios, etc.)
+
+3. **Score Tracking System**:
+   - Total score with points based on difficulty
+   - Accuracy percentage
+   - Current streak and best streak tracking
+   - Breakdown by difficulty level
+   - Problem type statistics
+
+4. **Problem History View**:
+   - Last 20 problems with results
+   - Shows difficulty, type, and submission status
+   - Searchable and filterable
+
+5. **Hints System**:
+   - AI-generated helpful hints for each problem
+   - Tracks number of hints used per problem
+   - Hints don't give away the answer
+
+6. **Step-by-Step Solutions**:
+   - AI-generated solution breakdowns
+   - Shown after submission
+   - Collapsible for better UX
+
+#### Technical Highlights:
+- **Database Schema**: Enhanced with `difficulty`, `problem_type`, `hint_text`, `solution_steps` fields
+- **User Stats Table**: Comprehensive tracking of user performance with JSONB for flexible stats
+- **API Routes**: RESTful endpoints for problems, submissions, stats, and history
+- **Type Safety**: Full TypeScript implementation with proper interfaces
+- **Performance**: Indexed database queries for fast retrieval
+- **Singapore Context**: All problems use local currency (SGD), places (NTUC, MRT), and scenarios familiar to Singapore students
+
+#### Design Decisions:
+1. **User Experience First**: Simple, intuitive interface with clear visual feedback
+2. **Gamification**: Score, streaks, and achievements to encourage continued practice
+3. **Educational Value**: Hints and solutions help students learn, not just get answers
+4. **Mobile Responsive**: Works seamlessly on all screen sizes
+5. **Progressive Disclosure**: Advanced features (stats, history) hidden in expandable panels
+
+#### Challenges Overcome:
+1. **Tailwind CSS Configuration**: Resolved module resolution issues by updating tsconfig.json and using Tailwind v3
+2. **Dark Mode Override**: Removed default dark mode styles that were hiding the UI
+3. **AI Response Parsing**: Robust JSON extraction from Gemini responses with fallback handling
+4. **Database Schema Evolution**: Added enhanced schema while maintaining backward compatibility
+
+#### Future Enhancements (If Time Permits):
+- Multi-user support with authentication
+- Leaderboard for competitive learning
+- Timed challenges
+- Achievement badges
+- Export progress reports
+- Teacher dashboard for monitoring students 
 
 ## Additional Features (Optional)
 
 If you have time, consider adding:
 
-- [ ] Difficulty levels (Easy/Medium/Hard)
-- [ ] Problem history view
-- [ ] Score tracking
-- [ ] Different problem types (addition, subtraction, multiplication, division)
-- [ ] Hints system
-- [ ] Step-by-step solution explanations
+- [x] Difficulty levels (Easy/Medium/Hard)
+- [x] Problem history view
+- [x] Score tracking
+- [x] Different problem types (addition, subtraction, multiplication, division)
+- [x] Hints system
+- [x] Step-by-step solution explanations
 
 ---
 
