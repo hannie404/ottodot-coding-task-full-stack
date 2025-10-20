@@ -1,4 +1,6 @@
 # Math Problem Generator - Developer Assessment Starter Kit
+<img width="1195" height="765" alt="image" src="https://github.com/user-attachments/assets/39655443-7d75-4d23-998e-05ac70aabaea" />
+<img width="1379" height="839" alt="image" src="https://github.com/user-attachments/assets/e9134b5b-832b-4615-8642-594b40f62c42" />
 
 ## Overview
 
@@ -141,6 +143,10 @@ When submitting your assessment, provide:
 #### Core Features (All Implemented ✅)
 1. **AI-Powered Problem Generation**: Using Google's Gemini 2.5 Flash model to generate contextual Singapore Primary 5 math problems
 2. **Database Persistence**: All problems and submissions saved to Supabase with proper schemas and RLS policies
+<img width="1918" height="277" alt="image" src="https://github.com/user-attachments/assets/09c3de7c-c4da-4084-9e23-90d4571fd8cd" />
+<img width="1918" height="266" alt="image" src="https://github.com/user-attachments/assets/4b61e148-7c74-4cc3-977a-7815f22e32dd" />
+<img width="1918" height="266" alt="image" src="https://github.com/user-attachments/assets/65833e02-3ad8-4627-b9ef-e77dac8345ef" />
+
 3. **Personalized Feedback**: AI-generated feedback tailored to whether the answer is correct or incorrect
 4. **Responsive UI**: Clean, mobile-first design using Tailwind CSS with gradient backgrounds and smooth animations
 5. **Error Handling**: Comprehensive try-catch blocks with user-friendly error messages
