@@ -126,15 +126,30 @@ Create a new API route that handles:
 
 ## Assessment Submission
 
-When submitting your assessment, provide:
+### Live Demo & Credentials
 
-1. **GitHub Repository URL**: Make sure it's public
-2. **Live Demo URL**: Your Vercel deployment
-3. **Supabase Credentials**: Add these to your README for testing:
-   ```
-   SUPABASE_URL: [Your Supabase Project URL]
-   SUPABASE_ANON_KEY: [Your Supabase Anon Key]
-   ```
+- **GitHub Repository**: [https://github.com/hannie404/ottodot-coding-task-full-stack](https://github.com/hannie404/ottodot-coding-task-full-stack)
+- **Live Demo URL**: [https://m4th-problem-generator.vercel.app/](https://m4th-problem-generator.vercel.app/)
+
+### Supabase Credentials for Testing
+
+Reviewers can use these credentials to test the database integration:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL="https://ducgocwgjtomwrsmgbju.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR1Y2dvY3dnanRvbXdyc21nYmp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5MDQ3OTIsImV4cCI6MjA3NjQ4MDc5Mn0.PpaSkytM_ZmppMhl4ML3SrCzog6t-4dTMcqwRJetYvA"
+```
+
+**Note:** These are public credentials protected by Row Level Security (RLS) policies. They allow anonymous access for demonstration purposes, which is safe for this assessment.
+
+### How to Test
+
+1. Visit the live demo URL
+2. Click "Generate New Problem" to create a math problem
+3. Submit an answer to see AI-generated feedback
+4. Check the Stats panel to see score tracking
+5. View History to see past problems
+6. Try different difficulty levels and problem types
 
 ## Implementation Notes
 
