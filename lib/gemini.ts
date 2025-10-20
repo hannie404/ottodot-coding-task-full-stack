@@ -1,8 +1,8 @@
 import { GoogleGenAI } from '@google/genai';
 import type { GeminiImagePart, GeminiContentPart } from './types';
 
-if (!process.env.GOOGLE_API_KEY) {
-  throw new Error('GOOGLE_API_KEY is not set in environment variables');
+if (!process.env.GEMINI_API_KEY) {
+  throw new Error('GEMINI_API_KEY is not set in environment variables');
 }
 
 const ai = new GoogleGenAI({});
